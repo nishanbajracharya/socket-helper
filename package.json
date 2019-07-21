@@ -4,6 +4,7 @@
   "description": "Socket.io helper utilities with events inspired by flux standard actions.",
   "main": "index.js",
   "dependencies": {
+    "lodash.merge": "^4.6.2",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
