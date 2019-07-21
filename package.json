@@ -5,11 +5,11 @@
   "main": "index.js",
   "dependencies": {
     "lodash.merge": "^4.6.2",
-    "lodash.pull": "^4.1.0",
-    "socket.io": "^2.2.0"
+    "lodash.pull": "^4.1.0"
   },
   "devDependencies": {
-    "eslint": "^6.1.0"
+    "eslint": "^6.1.0",
+    "socket.io": "^2.2.0"
   },
   "scripts": {
     "lint": "eslint src/**/*.js",
