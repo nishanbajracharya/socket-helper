@@ -13,10 +13,13 @@
     "@babel/preset-env": "^7.5.5",
     "del-cli": "^2.0.0",
     "eslint": "^6.1.0",
+    "express": "^4.17.1",
     "make-dir-cli": "^2.0.0",
     "socket.io": "^2.2.0"
   },
   "scripts": {
+    "preexample": "npm run build",
+    "example": "node examples/index.js",
     "prebuild": "del lib && make-dir lib",
     "build": "babel src/index.js -o lib/socker-helper.js",
     "lint": "eslint src/**/*.js",
