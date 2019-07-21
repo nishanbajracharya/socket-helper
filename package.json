@@ -21,7 +21,7 @@
     "preexample": "npm run build",
     "example": "node examples/index.js",
     "prebuild": "del lib && make-dir lib",
-    "build": "babel src/index.js -o lib/socker-helper.js",
+    "build": "babel src/index.js -o lib/socket-helper.js",
     "lint": "eslint src/**/*.js",
     "lint-fix": "eslint --fix src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"

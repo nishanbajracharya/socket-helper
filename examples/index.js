@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-var socketHelper = require('../lib/socker-helper');
+var socketHelper = require('../lib/socket-helper');
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
