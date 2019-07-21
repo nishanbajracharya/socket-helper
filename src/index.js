@@ -1,3 +1,4 @@
+var pull = require('lodash.pull');
 var merge = require('lodash.merge');
 
 // Socket IO Events
@@ -21,17 +22,18 @@ var TYPE = {
  * @param {string} type
  * @param {Object} payload
  */
-function createEvent (type, payload) {
+function createEvent(type, payload) {
   return { type, payload };
 }
 
 // Default configs for helper
 var defaultConfig = {
+  clients: [],
   overrides: {
     message: false,
     connection: false,
     disconnection: false,
-    newConnection: false,
+    newConnection: false
   }
 };
 
@@ -40,9 +42,16 @@ var defaultConfig = {
  *
  * @param {SocketIO.Server} _io
  * @param {function} _onConnection
+ * @param {function} _onDisconnection
  * @param {object} _config
  */
-function socketHelper(_io, _onConnection, _config) {
+function socketHelper(_io, _onConnection, _onDisconnection, _config) {
+  if (!_io) {
+    throw new Error(
+      'Socket IO required. Cannot initialize helper without Socket IO'
+    );
+  }
+
   if (!_config) {
     _config = {};
   }
@@ -50,14 +59,61 @@ function socketHelper(_io, _onConnection, _config) {
   // Generate configs to be used
   var io = _io;
   var onConnection = _onConnection;
+  var onDisconnection = _onDisconnection;
   var config = merge(defaultConfig, _config);
 
   io.on(EVENT.CONNECTION, function(socket) {
     // Get ID of socket
     var clientID = socket.id;
 
-    onConnection && onConnection(socket, clientID);
+    // Save reference of new connection
+    config.clients.push(clientID);
+
+    // Prepare payload for connection
+    var payload = preparePayload(clientID, config.clients);
+
+    // Emit message to socket about new connection
+    !config.overrides.connection &&
+      socket.emit(EVENT.MESSAGE, createEvent(TYPE.CONNECTION, payload));
+
+    // Notify other clients about new connection
+    !config.overrides.newConnection &&
+      socket.broadcast.emit(
+        EVENT.MESSAGE,
+        createEvent(TYPE.NEW_CONNECTION, payload)
+      );
+
+    socket.on(EVENT.DISCONNECT, function() {
+      // Remove disconnected client
+      pull(config.clients, clientID);
+
+      // Prepare new payload
+      payload = preparePayload(clientID, config.clients);
+
+      // Notify other clients about disconnection
+      !config.overrides.disconnection &&
+        socket.broadcast.emit(
+          EVENT.MESSAGE,
+          createEvent(TYPE.DISCONNECTION, payload)
+        );
+
+      // Call disconnection hooks if exists
+      onDisconnection && onDisconnection(socket, payload);
+    });
+
+    // Call connection hook if exists
+    onConnection && onConnection(socket, payload);
   });
+
+  /**
+   * Prepare Payload with caller clientID and existing clients
+   *
+   * @param {string} clientID
+   * @param {string[]} clients
+   */
+  function preparePayload(clientID, clients) {
+    return { clientID, clients };
+  }
 }
 
 module.export = socketHelper;

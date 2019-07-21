@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "lodash.merge": "^4.6.2",
+    "lodash.pull": "^4.1.0",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
