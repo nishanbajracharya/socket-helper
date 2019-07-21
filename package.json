@@ -8,10 +8,17 @@
     "lodash.pull": "^4.1.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "del-cli": "^2.0.0",
     "eslint": "^6.1.0",
+    "make-dir-cli": "^2.0.0",
     "socket.io": "^2.2.0"
   },
   "scripts": {
+    "prebuild": "del lib && make-dir lib",
+    "build": "babel src/index.js -o lib/socker-helper.js",
     "lint": "eslint src/**/*.js",
     "lint-fix": "eslint --fix src/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
