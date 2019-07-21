@@ -101,6 +101,17 @@ function socketHelper(_io, _onConnection, _onDisconnection, _config) {
       onDisconnection && onDisconnection(socket, payload);
     });
 
+    socket.on(EVENT.MESSAGE, function(data) {
+      // Prepare payload with message data
+      var payload = preparePayload(clientID, config.clients, {
+        event: data.type,
+        data: data.payload
+      });
+
+      // Send message to all clients
+      !config.overrides.message && io.emit(EVENT.MESSAGE, createEvent(TYPE.MESSAGE, payload));
+    });
+
     // Call connection hook if exists
     onConnection && onConnection(socket, payload);
   });
@@ -111,8 +122,8 @@ function socketHelper(_io, _onConnection, _onDisconnection, _config) {
    * @param {string} clientID
    * @param {string[]} clients
    */
-  function preparePayload(clientID, clients) {
-    return { clientID, clients };
+  function preparePayload(clientID, clients, rest) {
+    return { clientID, clients, ...rest };
   }
 }
 
