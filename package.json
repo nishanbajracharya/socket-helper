@@ -2,7 +2,7 @@
   "name": "socket-helper",
   "version": "1.0.0",
   "description": "Socket.io helper utilities with events inspired by flux standard actions.",
-  "main": "index.js",
+  "main": "lib/socket-helper.js",
   "dependencies": {
     "lodash.merge": "^4.6.2",
     "lodash.pull": "^4.1.0"
