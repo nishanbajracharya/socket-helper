@@ -1,6 +1,6 @@
 {
   "name": "socket-helper",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Socket.io helper utilities with events inspired by flux standard actions.",
   "main": "lib/socket-helper.js",
   "dependencies": {
