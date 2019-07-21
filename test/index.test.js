@@ -80,3 +80,11 @@ describe('Socket Helper Imports', function() {
     });
   });
 });
+
+describe('Socket Helper', function() {
+  it('should throw error if Socket IO is not provided', function() {
+    expect(socketHelper).to.throw(
+      'Socket IO required. Cannot initialize helper without Socket IO'
+    );
+  });
+});
